@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "@brad-green/tokens/dist/tokens.css";
+@import "@brad-green/tokens/dist/shadcn-theme.css";
+
+@config "../tailwind.config.js";
