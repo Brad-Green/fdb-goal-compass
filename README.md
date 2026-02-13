@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Career Goals (fdb-goal-compass)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A career goals tracker built with the FDB design system. Track quarterly goals with status, progress, and notes.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **TypeScript** + **Vite 7**
+- **Tailwind CSS v4** with FDB design tokens (`@brad-green/tokens`)
+- **Radix UI** primitives (Dialog, Select, Slider, Label)
+- **FDB UI Components** (Button, Input, Card, Sheet, Badge, etc.)
+- **React Router v7** for routing
+- **date-fns** for date formatting
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 20+
+- pnpm
+- A `GITHUB_TOKEN` environment variable with `read:packages` scope (for `@brad-green/tokens` from GitHub Packages)
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/Brad-Green/fdb-goal-compass.git
+   cd fdb-goal-compass
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. Create `.npmrc` in the project root:
+   ```
+   @brad-green:registry=https://npm.pkg.github.com
+   //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. Install dependencies and start the dev server:
+   ```bash
+   pnpm install
+   pnpm dev
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── goals/          # Goal-specific components
+│   │   ├── AddGoalDialog.tsx
+│   │   ├── GoalCard.tsx
+│   │   ├── GoalDetailSheet.tsx
+│   │   ├── GoalsSection.tsx
+│   │   ├── ProgressBar.tsx
+│   │   └── StatusBadge.tsx
+│   └── ui/             # FDB design system components
+├── hooks/
+│   └── useGoals.ts     # Goals state management
+├── lib/
+│   ├── types.ts        # Shared types (Size, FieldDecoration)
+│   └── utils.ts        # cn() utility
+├── pages/
+│   ├── Index.tsx        # Main goals page
+│   └── NotFound.tsx     # 404 page
+├── types/
+│   └── goal.ts          # Goal type definitions
+├── App.tsx              # Router
+├── index.css            # Tailwind + token imports
+└── main.tsx             # Entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Accessibility
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This app is built to WCAG 2.1 AA compliance:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Keyboard-operable goal cards with focus indicators
+- ARIA-labeled progress bars and status badges
+- Skip navigation link
+- Screen reader announcements for goal creation/updates
+- Color contrast meets 4.5:1 AA ratio for all text
+- `prefers-reduced-motion` respected on all animations
+- 44px minimum touch targets on interactive elements
+
+## Design Tokens
+
+Status colors are mapped to existing FDB design tokens (no custom tokens):
+
+| Status | Token |
+|--------|-------|
+| Not Started | `muted-foreground` |
+| In Progress | `info` |
+| Complete | `success` |
+| Cancelled | `destructive` |
+| Progress bar | `primary` (fill), `muted` (track) |

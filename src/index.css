@@ -3,3 +3,16 @@
 @import "@brad-green/tokens/dist/shadcn-theme.css";
 
 @config "../tailwind.config.js";
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-family: var(--typographyFdbFontDefinitionsFontFamilySans), system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+  }
+  code, pre {
+    font-family: var(--typographyFdbFontDefinitionsFontFamilyMonospace), monospace;
+  }
+}
