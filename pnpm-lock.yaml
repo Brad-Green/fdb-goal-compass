@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@brad-green/tokens':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       '@radix-ui/react-dialog':
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -182,8 +182,8 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@brad-green/tokens@1.0.2':
-    resolution: {integrity: sha512-jDkY8udRnqD8+ZbfLmEsW51OcF95bUfpGzjquBJkiA7RQYR3gq+DXdByktGuQ423LPq/e2+Kd5gxnp4CTWM+PA==, tarball: https://npm.pkg.github.com/download/@brad-green/tokens/1.0.2/093dd9f33f30aed3e16172585ed291e640776cec}
+  '@brad-green/tokens@1.0.3':
+    resolution: {integrity: sha512-TrWnpkgE3vD+8awVEFXaoo3s58mRzI9fHikz1QpKXhC4SAHWPx/eCwzfZDNH54vDrLR6+JLe9Ax04odl6N2DSQ==, tarball: https://npm.pkg.github.com/download/@brad-green/tokens/1.0.3/d9cd50b3fc4a81d5d37292b7521ca9162ece874a}
 
   '@esbuild/aix-ppc64@0.27.3':
     resolution: {integrity: sha512-9fJMTNFTWZMh5qwrBItuziu834eOCUcEqymSH7pY+zoMVEZg3gcPuBNxH1EvfVYe9h0x/Ptw8KBzv7qxb7l8dg==}
@@ -1889,7 +1889,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@brad-green/tokens@1.0.2': {}
+  '@brad-green/tokens@1.0.3': {}
 
   '@esbuild/aix-ppc64@0.27.3':
     optional: true

@@ -9,16 +9,30 @@ const Slider = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Root
     ref={ref}
+    data-slot="slider"
     className={cn(
-      "relative flex w-full touch-none select-none items-center",
+      "relative flex w-full touch-none select-none items-center data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 " +
+        "aria-[invalid=true]:[&_[role=slider]]:border-destructive " +
+        "aria-[invalid=true]:[&_[role=slider]]:ring-ring-error " +
+        // Ensure invalid focus rings are error-colored even when the thumb sets `focus-visible:ring-ring`.
+        "aria-[invalid=true]:[&_[role=slider]]:focus-visible:ring-ring-error",
       className
     )}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-primary/20">
-      <SliderPrimitive.Range className="absolute h-full bg-primary" />
+    <SliderPrimitive.Track
+      data-slot="slider-track"
+      className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-primary-soft data-[disabled]:opacity-50"
+    >
+      <SliderPrimitive.Range
+        data-slot="slider-range"
+        className="absolute h-full bg-primary"
+      />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-6 w-6 rounded-full border-2 border-primary bg-background ring-offset-background motion-safe:transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 touch-action-none after:absolute after:inset-[-10px] after:content-['']" />
+    <SliderPrimitive.Thumb
+      data-slot="slider-thumb"
+      className="block h-4 w-4 rounded-full border border-primary-border-subtle bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+    />
   </SliderPrimitive.Root>
 ))
 Slider.displayName = SliderPrimitive.Root.displayName

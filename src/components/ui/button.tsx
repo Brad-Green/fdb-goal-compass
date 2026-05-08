@@ -7,10 +7,10 @@ import type { FieldDecoration } from "@/lib/types"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all " +
-  "disabled:pointer-events-none disabled:opacity-50 " +
-  "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 " +
-  "outline-none focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[3px] " +
-  "aria-[invalid=true]:ring-ring-error aria-[invalid=true]:border-destructive",
+    "disabled:pointer-events-none disabled:opacity-50 " +
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 " +
+    "outline-none focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[3px] " +
+    "aria-[invalid=true]:ring-ring-error aria-[invalid=true]:border-destructive",
   {
     variants: {
       variant: {
@@ -23,12 +23,14 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive-hover",
         ghostMuted: "text-muted-foreground hover:bg-muted",
       },
+
       size: {
         regular: "h-10 px-4 py-2",
         large: "h-12 px-6 text-base",
         small: "h-9 px-3 text-sm",
         mini: "h-8 px-2 text-xs",
       },
+
       roundness: {
         default: "rounded-md",
         round: "rounded-full",
@@ -90,21 +92,37 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
+        ref={ref}
+        data-slot="button"
+        data-variant={resolvedVariant}
+        data-size={resolvedSize}
+        data-roundness={resolvedRoundness}
+        data-decoration={derivedDecoration}
         className={cn(
           buttonVariants({
             variant: resolvedVariant,
             size: resolvedSize,
             roundness: resolvedRoundness,
-            className,
-          })
+          }),
+          className
         )}
-        ref={ref}
-        data-decoration={derivedDecoration}
         {...props}
       >
-        {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
-        {children}
-        {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
+        {leftIcon && (
+          <span className="inline-flex items-center justify-center">
+            {leftIcon}
+          </span>
+        )}
+
+        <span className="inline-flex items-center justify-center">
+          {children}
+        </span>
+
+        {rightIcon && (
+          <span className="inline-flex items-center justify-center">
+            {rightIcon}
+          </span>
+        )}
       </Comp>
     )
   }
