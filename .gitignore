@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Test output
+coverage
+
+
 # Auth / tokens
 .npmrc
 
