@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { expectNoAxeViolations } from "./fixtures/axe";
 import { SEEDED_NOW_ISO, SEEDED_NOW_QUARTER } from "./fixtures/time";
 
 test.use({ locale: "en-US", timezoneId: "UTC" });
@@ -120,6 +121,20 @@ test.describe("Edit Goal (detail sheet)", () => {
       new RegExp(`^${SEEDED_TITLE} —[^,]+, 15% complete$`),
     );
     await expect(card).toContainText("15%");
+  });
+
+  test("the open detail sheet has no axe violations", async ({ page }) => {
+    const currentSection = page.locator("section", {
+      has: page.getByRole("heading", {
+        level: 2,
+        name: new RegExp(`current quarter \\(${SEEDED_NOW_QUARTER}\\)`, "i"),
+      }),
+    });
+    await currentSection
+      .getByRole("button", { name: new RegExp(SEEDED_TITLE, "i") })
+      .click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectNoAxeViolations(page);
   });
 
   test("edits in the comments textarea are persisted to the model", async ({

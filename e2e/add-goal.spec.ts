@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { expectNoAxeViolations } from "./fixtures/axe";
 import { FAKE_NOW_ISO, FAKE_NOW_QUARTER } from "./fixtures/time";
 
 test.use({ locale: "en-US", timezoneId: "UTC" });
@@ -107,5 +108,11 @@ test.describe("Add Goal (primary flow)", () => {
     await expect(dialog).toBeHidden();
 
     await expect(liveRegion).toHaveText(/goal "announced goal" created/i);
+  });
+
+  test("the open Add Goal dialog has no axe violations", async ({ page }) => {
+    await page.getByRole("button", { name: /add goal/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectNoAxeViolations(page);
   });
 });

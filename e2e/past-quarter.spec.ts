@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { expectNoAxeViolations } from "./fixtures/axe";
 import { FAKE_NOW_ISO, FAKE_NOW_QUARTER } from "./fixtures/time";
 
 test.use({ locale: "en-US", timezoneId: "UTC" });
@@ -92,5 +93,10 @@ test.describe("Past-quarter sections", () => {
       }),
     });
     await expect(currentSection.getByRole("button")).toHaveCount(0);
+  });
+
+  test("the past-quarter layout has no axe violations", async ({ page }) => {
+    // Steady state already verified in beforeEach; scan the rendered layout.
+    await expectNoAxeViolations(page);
   });
 });

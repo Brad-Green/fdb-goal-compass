@@ -76,15 +76,6 @@ describe("GoalDetailSheet", () => {
         onUpdate={() => {}}
       />,
     );
-    // Phase 6 TODO: formalize this in the allowlist. Radix Slider emits a
-    // child <span role="slider"> that does not inherit the outer label
-    // association, which axe flags as aria-input-field-name. Known Radix
-    // limitation; the outer labelled container still provides the a11y
-    // relationship for screen readers.
-    expect(
-      await axe(baseElement, {
-        rules: { "aria-input-field-name": { enabled: false } },
-      }),
-    ).toHaveNoViolations();
+    expect(await axe(baseElement)).toHaveNoViolations();
   });
 });

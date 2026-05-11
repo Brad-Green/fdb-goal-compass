@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { expectNoAxeViolations } from "./fixtures/axe";
 import { FAKE_NOW_ISO, FAKE_NOW_QUARTER } from "./fixtures/time";
 
 test.use({ locale: "en-US", timezoneId: "UTC" });
@@ -56,5 +57,11 @@ test.describe("Empty current quarter", () => {
     await expect(
       currentSection.getByRole("button", { name: /first q2 2026 goal/i }),
     ).toBeVisible();
+  });
+
+  test("the empty-state view has no axe violations", async ({ page }) => {
+    // Steady state from beforeEach (empty current-quarter section + two past
+    // sections). Scan as rendered.
+    await expectNoAxeViolations(page);
   });
 });
