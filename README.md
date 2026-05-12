@@ -65,6 +65,28 @@ src/
 └── main.tsx             # Entry point
 ```
 
+## Testing
+
+Full automated test suite — component tests, end-to-end tests, visual
+regression, and a11y audits — all run on every PR via GitHub Actions.
+
+```bash
+pnpm test                # Vitest in watch mode (component / unit tests)
+pnpm test:run            # Vitest, one-shot
+pnpm test:coverage       # HTML coverage report under coverage/
+pnpm e2e                 # Playwright end-to-end + visual + axe
+pnpm exec playwright test --ui    # Playwright UI mode
+```
+
+- **Component tests** (Vitest + React Testing Library + `vitest-axe`)
+  live next to their components as `*.test.tsx`.
+- **E2E / visual / a11y tests** (Playwright + `@axe-core/playwright`)
+  live under [e2e/](e2e/). See [e2e/README.md](e2e/README.md) for the
+  setup one-pager, spec layout, visual-baseline workflow, and CI
+  notes.
+- **CI** is wired in [.github/workflows/ci.yml](.github/workflows/ci.yml)
+  and runs both jobs on every PR and on pushes to `master`.
+
 ## Accessibility
 
 This app is built to WCAG 2.1 AA compliance:

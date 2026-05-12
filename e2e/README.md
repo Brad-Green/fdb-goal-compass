@@ -32,21 +32,50 @@ starts fresh.
 
 ```
 e2e/
-  smoke.spec.ts                     — app renders + survives reload
-  add-goal.spec.ts                  — primary flow: create a goal
-  edit-goal.spec.ts                 — open detail sheet, change status/percent/comments
-  past-quarter.spec.ts              — grouping + ordering of past quarters
-  empty-state.spec.ts               — current-quarter empty message + add-to-recover
+  smoke.spec.ts                     — app renders + survives reload (+ axe at steady state)
+  add-goal.spec.ts                  — primary flow: create a goal (+ axe on open dialog)
+  edit-goal.spec.ts                 — open detail sheet, change status/percent/comments (+ axe on open sheet)
+  past-quarter.spec.ts              — grouping + ordering of past quarters (+ axe)
+  empty-state.spec.ts               — current-quarter empty message + add-to-recover (+ axe)
   visual.spec.ts                    — visual regression baselines
   visual.spec.ts-snapshots/         — committed baseline PNGs (per OS)
   fixtures/time.ts                  — shared frozen-clock constants
+  fixtures/axe.ts                   — expectNoAxeViolations() helper + allowlist
   README.md                         — this file
 ```
 
-Later phases will add:
+## Accessibility (axe)
 
-- Axe checks wired into each spec (Phase 6)
-- `.github/workflows/ci.yml` running Vitest + Playwright on every PR (Phase 7)
+Every E2E spec ends with a steady-state `expectNoAxeViolations(page)`
+scan (`fixtures/axe.ts`), scoped to the
+`wcag2a / wcag2aa / wcag21a / wcag21aa` tag set.
+
+Component-level axe scans also live alongside each page-level
+component test (via `vitest-axe`). The two layers catch different
+things: component axe runs in jsdom (no color computation), E2E axe
+runs in real Chromium (catches contrast issues).
+
+Current allowlist (in `fixtures/axe.ts`):
+
+| Rule | Surface | Reason | Follow-up |
+|---|---|---|---|
+| `color-contrast` | `--muted-foreground` (slate-500) on card metadata, slider ticks, dialog descriptions | 4.48:1 on slate-50, just under the 4.5:1 AA threshold | Darken `--muted-foreground` to slate-600 in `src/index.css` and remove this entry |
+
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every PR and on pushes to `master`:
+
+- **Job 1 — Lint, type-check, unit**: `pnpm lint`, `pnpm build`
+  (runs `tsc -b && vite build`), `pnpm test:run`.
+- **Job 2 — Playwright E2E + visual + axe**: caches
+  `~/.cache/ms-playwright` keyed on the lockfile, runs `pnpm e2e`.
+
+Artifacts:
+
+- `playwright-report/` uploaded on every run (pass or fail).
+- `test-results/` and `e2e/**-snapshots/**` uploaded on failure only.
+  The snapshots artifact is how Linux baselines were bootstrapped
+  initially — see the visual-baselines section below.
 
 ## Visual regression baselines
 
@@ -69,6 +98,8 @@ run) are committed side-by-side.
 
 ### Updating baselines after an intentional visual change
 
+On your local OS:
+
 ```bash
 pnpm exec playwright test visual.spec.ts --update-snapshots
 git add e2e/visual.spec.ts-snapshots
@@ -77,6 +108,21 @@ git add e2e/visual.spec.ts-snapshots
 Review the generated PNGs before committing — `--update-snapshots`
 accepts whatever the app currently renders, so a real regression
 dressed up as an "update" will sail through.
+
+### Updating the Linux baselines (when you're not on Linux)
+
+If you only updated the `-win32.png` files locally, CI on Ubuntu will
+fail the visual specs because the `-linux.png` baselines no longer
+match. To regenerate them without Docker:
+
+1. Push your branch. The Playwright job will fail.
+2. Download the `playwright-snapshots` artifact from that failed run
+   (uploaded automatically on failure).
+3. Copy the fresh `*-chromium-linux.png` files into
+   `e2e/visual.spec.ts-snapshots/`, commit, and push.
+
+Playwright picks the correct file per run via `process.platform`, so
+both OSes stay in sync once both sets are committed.
 
 ### Why captures are stable
 
