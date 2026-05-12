@@ -83,7 +83,7 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">
-                  Career Goals
+                  Career Goalz
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {currentQuarter}
