@@ -29,18 +29,6 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - name: Debug packages auth
-        run: |
-          echo "token length: ${#GITHUB_TOKEN}"
-          echo ".npmrc:"
-          cat .npmrc
-          echo "---"
-          echo "HEAD probe:"
-          curl -sI -H "Authorization: Bearer $GITHUB_TOKEN" \
-            "https://npm.pkg.github.com/download/@brad-green/tokens/1.0.3/d9cd50b3fc4a81d5d37292b7521ca9162ece874a" | head -10
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
