@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils"
 
 const textareaVariants = cva(
   "flex min-h-textarea-md w-full bg-background px-3 py-2 text-sm shadow-sm " +
-    "rounded-md border border-input " +
-    "placeholder:text-muted-foreground " +
-    "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring " +
-    "aria-[invalid=true]:border-destructive " +
-    "aria-[invalid=true]:ring-ring-error " +
-    "disabled:cursor-not-allowed disabled:opacity-50",
+  "rounded-md border border-input " +
+  "placeholder:text-muted-foreground " +
+  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring " +
+  "aria-[invalid=true]:border-destructive " +
+  "aria-[invalid=true]:ring-ring-error " +
+  "disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -42,14 +42,14 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <textarea
-        className={cn(
-          textareaVariants({
-            size: resolvedSize,
-            roundness: resolvedRoundness,
-            className,
-          })
-        )}
         ref={ref}
+        data-slot="textarea"
+        className={cn(
+          textareaVariants({ size: resolvedSize, roundness: resolvedRoundness }),
+          className
+        )}
+        data-size={resolvedSize}
+        data-roundness={resolvedRoundness}
         {...props}
       />
     )

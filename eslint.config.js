@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // `lovable-export/` is a vendored snapshot with its own package.json,
+  // lockfile, and eslint config. Lint it from there if needed.
+  globalIgnores(['dist', 'lovable-export', 'coverage', 'playwright-report', 'test-results', '.claude']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -18,6 +20,22 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+  },
+  // shadcn/ui primitives export a `cva` variants helper alongside the
+  // component. That's the upstream pattern — not something we fix.
+  {
+    files: ['src/components/ui/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  // Vitest matcher type augmentation: the empty interfaces are the
+  // documented extension point, not a code smell.
+  {
+    files: ['src/test/**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
 ])

@@ -118,6 +118,7 @@ export function GoalDetailSheet({
             </div>
             <Slider
               id="progress"
+              aria-label="Progress"
               value={[goal.percentComplete]}
               onValueChange={([value]: number[]) =>
                 onUpdate(goal.id, { percentComplete: value })

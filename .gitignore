@@ -12,8 +12,21 @@ dist
 dist-ssr
 *.local
 
+# Test output
+coverage
+
+# Playwright
+/playwright-report
+/test-results
+/blob-report
+/.playwright
+
+
 # Auth / tokens
-.npmrc
+# Note: .npmrc is intentionally tracked — it only references ${GITHUB_TOKEN}
+# via env var, never a literal token. If you need to override for local dev,
+# create .npmrc.local (ignored below).
+.npmrc.local
 
 # Lovable export (reference only)
 lovable-export
